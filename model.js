@@ -25,13 +25,13 @@ scene.add(camera)
 //model from blender
 //dracoloader
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('./draco/');
+dracoLoader.setDecoderPath('static/draco/');
 
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
 
 gltfLoader.load(
-    './Isometric_Room_Alwin.glb',
+    'static/Isometric_Room_Alwin.glb',
     (gltf) =>
     {
         console.log('loaded')
