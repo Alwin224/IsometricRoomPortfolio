@@ -1,5 +1,6 @@
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/Addons.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 //scene
 const scene = new THREE.Scene();
@@ -22,7 +23,25 @@ camera.position.z = 2
 scene.add(camera)
 
 //model from blender
+//dracoloader
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('./draco/');
 
+const gltfLoader = new GLTFLoader()
+gltfLoader.setDRACOLoader(dracoLoader)
+
+gltfLoader.load(
+    './Isometric_Room_Alwin.glb',
+    (gltf) =>
+    {
+        console.log('loaded')
+        gltf.scene.traverse((child) =>
+        {
+            child.material = new THREE.MeshBasicMaterial(0xffffff)
+        })
+        scene.add(gltf.scene)
+    }
+)
 
 //canvas 
 const canvas = document.querySelector('canvas.webgl')
