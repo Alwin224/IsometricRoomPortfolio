@@ -8,37 +8,37 @@ const scene = new THREE.Scene();
 
 //sizes
 const sizes = {
-    width:800,
-    height:600
+    width: window.innerWidth,
+    height: window.innerHeight
 }
 
 
-//hemisphere light so that there is a light that points from the top
-const hemisphereLight = new THREE.HemisphereLight(0xffffff)
-scene.add(hemisphereLight)
+//directional light so that there is a light that points from the top
+const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+dirLight.position.set(5, 10, 7.5);
+scene.add(dirLight);
 
 //camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width/sizes.height)
-camera.position.z = 2
-scene.add(camera)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+camera.position.set(2, 2, 3);
+scene.add(camera);
+camera.lookAt(0, 0, 0);
 
 //model from blender
 //dracoloader
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('static/draco/');
+dracoLoader.setDecoderPath('/static/draco/');
 
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
 
 gltfLoader.load(
-    'static/Isometric_Room_Alwin.glb',
-    (gltf) =>
-    {
+    '/static/Isometric_Room_Alwin.glb',
+    (gltf) => {
         console.log('loaded')
-        gltf.scene.traverse((child) =>
-        {
-            child.material = new THREE.MeshBasicMaterial(0xffffff)
-        })
+        gltf.scene.scale.set(1, 1, 1)
+
+        gltf.scene.position.set(0, 0, 0)
         scene.add(gltf.scene)
     }
 )
@@ -52,4 +52,9 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 
-renderer.render(scene, camera)
+const tick = () => {
+    requestAnimationFrame(tick)
+    renderer.render(scene, camera)
+}
+
+tick()
