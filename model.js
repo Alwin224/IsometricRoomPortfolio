@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 //scene
 const scene = new THREE.Scene();
@@ -13,16 +14,21 @@ const sizes = {
 }
 
 
-//directional light so that there is a light that points from the top
-const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-dirLight.position.set(5, 10, 7.5);
-scene.add(dirLight);
+//point light so that it illuminates and has the cool shadow and also added a beige color as the light
+const light = new THREE.PointLight(0xf5f5dc, 1);
+light.position.x = 1
+light.position.y = 1.5
+light.position.z = 0
 
-//camera
+scene.add(light);
+
+//camera and played around with x, y, and z coordinates to find the best position for the model
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-camera.position.set(2, 2, 3);
+camera.position.x = 1.99
+camera.position.y = 1.4
+camera.position.z = -1.88
+
 scene.add(camera);
-camera.lookAt(0, 0, 0);
 
 //model from blender
 //dracoloader
@@ -35,26 +41,43 @@ gltfLoader.setDRACOLoader(dracoLoader)
 gltfLoader.load(
     '/static/Isometric_Room_Alwin.glb',
     (gltf) => {
-        console.log('loaded')
-        gltf.scene.scale.set(1, 1, 1)
+        gltf.scene.scale.x = 1
+        gltf.scene.scale.y = 1
+        gltf.scene.scale.z = 1
 
-        gltf.scene.position.set(0, 0, 0)
+        gltf.scene.position.x = 0;
+        gltf.scene.position.y = 0;
+        gltf.scene.position.z = 0;
+
         scene.add(gltf.scene)
+        
     }
+    
 )
+
 
 //canvas 
 const canvas = document.querySelector('canvas.webgl')
 
+//controls
+const controls = new OrbitControls(camera,canvas)
+controls.enableDamping = true
+
 //renderer
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
+
 })
 renderer.setSize(sizes.width, sizes.height)
 
 const tick = () => {
-    requestAnimationFrame(tick)
+    window.requestAnimationFrame(tick)
+
     renderer.render(scene, camera)
+    controls.update()
+
 }
 
 tick()
+
+c
