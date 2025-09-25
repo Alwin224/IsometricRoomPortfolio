@@ -41,6 +41,7 @@ gltfLoader.setDRACOLoader(dracoLoader)
 gltfLoader.load(
     '/static/Isometric_Room_Alwin.glb',
     (gltf) => {
+
         gltf.scene.scale.x = 1
         gltf.scene.scale.y = 1
         gltf.scene.scale.z = 1
@@ -50,9 +51,7 @@ gltfLoader.load(
         gltf.scene.position.z = 0;
 
         scene.add(gltf.scene)
-        
     }
-    
 )
 
 
@@ -78,6 +77,24 @@ const tick = () => {
     renderer.render(scene, camera)
     controls.update()
 
+}
+
+//adding a raycaster so that things may be clickable in the blender file
+const raycaster = new THREE.Raycaster()
+document.addEventListener('mousedown',onMouseDown);
+
+function onMouseDown(event){
+    const coordinates = new THREE.Vector2(
+        (event.clientX/ renderer.domElement.clientWidth) * 2 - 1,
+        -((event.clientY/ renderer.domElement.clientHeight) * 2 -1),
+
+    );
+
+    raycaster.setFromCamera(coordinates,camera);
+  //TODO: have to make an intersect variable that intersects the name of the object itself
+ //TODO:need to go through the gltf scene to make something that intersects and use gltf.scene to traverse through
+ //TODO: Thought process is to make a pointer that points to the object in the gltf scene and when clicked on its x and y
+ //it will make a dialog box apper so x and y of mesh clicked
 }
 
 tick()
