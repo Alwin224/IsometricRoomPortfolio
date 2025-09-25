@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 //scene
 const scene = new THREE.Scene();
-
+scene.background = new THREE.Color(0x4f4d46);
 
 //sizes
 const sizes = {
