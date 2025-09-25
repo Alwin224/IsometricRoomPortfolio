@@ -68,7 +68,9 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 
 })
+renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.setSize(sizes.width, sizes.height)
+
 
 const tick = () => {
     window.requestAnimationFrame(tick)
@@ -79,5 +81,3 @@ const tick = () => {
 }
 
 tick()
-
-c
