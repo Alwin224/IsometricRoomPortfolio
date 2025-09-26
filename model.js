@@ -3,6 +3,8 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+//global variable that is the gltf model
+var gltfmodel;
 //scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x4f4d46);
@@ -42,6 +44,8 @@ gltfLoader.load(
     '/static/Isometric_Room_Alwin.glb',
     (gltf) => {
 
+
+        gltfmodel = gltf.scene;
         gltf.scene.scale.x = 1
         gltf.scene.scale.y = 1
         gltf.scene.scale.z = 1
@@ -50,7 +54,18 @@ gltfLoader.load(
         gltf.scene.position.y = 0;
         gltf.scene.position.z = 0;
 
-        scene.add(gltf.scene)
+        scene.add(gltfmodel)
+
+        const objNames = [];
+        gltfmodel.traverse((child) => {
+            if (child.isMesh || child.isObject3D) {
+                if (child.name) {
+                    objNames.push(child.name);
+                }
+            }
+        });
+
+        console.log(objNames) //Cube103 and Cube104
     }
 )
 
@@ -59,7 +74,7 @@ gltfLoader.load(
 const canvas = document.querySelector('canvas.webgl')
 
 //controls
-const controls = new OrbitControls(camera,canvas)
+const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
 //renderer
@@ -81,20 +96,26 @@ const tick = () => {
 
 //adding a raycaster so that things may be clickable in the blender file
 const raycaster = new THREE.Raycaster()
-document.addEventListener('mousedown',onMouseDown);
+document.addEventListener('mousedown', onMouseDown);
 
-function onMouseDown(event){
+function onMouseDown(event) {
     const coordinates = new THREE.Vector2(
-        (event.clientX/ renderer.domElement.clientWidth) * 2 - 1,
-        -((event.clientY/ renderer.domElement.clientHeight) * 2 -1),
+        (event.clientX / renderer.domElement.clientWidth) * 2 - 1,
+        -((event.clientY / renderer.domElement.clientHeight) * 2 - 1),
 
     );
 
-    raycaster.setFromCamera(coordinates,camera);
-  //TODO: have to make an intersect variable that intersects the name of the object itself
- //TODO:need to go through the gltf scene to make something that intersects and use gltf.scene to traverse through
- //TODO: Thought process is to make a pointer that points to the object in the gltf scene and when clicked on its x and y
- //it will make a dialog box apper so x and y of mesh clicked
+
+    raycaster.setFromCamera(coordinates, camera);
+    //TODO: have to make it show dialog boxes when clicked now
+    const intersections = raycaster.intersectObjects(gltfmodel.children, true);
+    for (let i = 0; i < intersections.length; i++) {
+        if (intersections[i].object.name == 'Cube103') {
+            console.log("About");
+        } else if (intersections[i].object.name == 'Cube104') {
+            console.log("Contact")
+        }
+    }
 }
 
 tick()
