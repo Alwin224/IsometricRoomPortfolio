@@ -5,6 +5,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 //global variable that is the gltf model
 var gltfmodel;
+
+
 //scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x4f4d46);
@@ -112,8 +114,10 @@ function onMouseDown(event) {
     for (let i = 0; i < intersections.length; i++) {
         if (intersections[i].object.name == 'Cube103') {
             console.log("About");
+            document.getElementById("aboutmodal").showModal();
         } else if (intersections[i].object.name == 'Cube104') {
             console.log("Contact")
+            document.getElementById("contactmodal").showModal()
         }
     }
 }
