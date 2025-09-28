@@ -109,7 +109,7 @@ function onMouseDown(event) {
 
 
     raycaster.setFromCamera(coordinates, camera);
-    //TODO: have to make it show dialog boxes when clicked now
+    
     const intersections = raycaster.intersectObjects(gltfmodel.children, true);
     for (let i = 0; i < intersections.length; i++) {
         if (intersections[i].object.name == 'Cube103') {
