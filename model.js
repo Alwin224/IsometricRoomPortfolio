@@ -109,15 +109,19 @@ function onMouseDown(event) {
 
 
     raycaster.setFromCamera(coordinates, camera);
-    
+
     const intersections = raycaster.intersectObjects(gltfmodel.children, true);
     for (let i = 0; i < intersections.length; i++) {
         if (intersections[i].object.name == 'Cube103') {
             console.log("About");
+            document.getElementById("contactmodal").close();
             document.getElementById("aboutmodal").showModal();
+
         } else if (intersections[i].object.name == 'Cube104') {
             console.log("Contact")
+            document.getElementById("aboutmodal").close();
             document.getElementById("contactmodal").showModal()
+
         }
     }
 }
