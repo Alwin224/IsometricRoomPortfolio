@@ -37,7 +37,7 @@ scene.add(camera);
 //model from blender
 //dracoloader
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('/static/draco/');
+dracoLoader.setDecoderPath('/static/');
 
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
