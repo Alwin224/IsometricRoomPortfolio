@@ -28,3 +28,14 @@ p.a {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: medium;
 }
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+canvas.webgl {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
